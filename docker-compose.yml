@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: dev.dockerfile
+      context: ./Nginx
+    volumes:
+      - ./Nginx/logs:/var/log/nginx
+    ports:
+      - "80:80"
+
+  react-front:
+    build:
+      dockerfile: dev.dockerfile
+      context: ReactFront
+    env_file:
+      - .env
+    volumes:
+      - /usr/app/node_modules
+      - ./ReactFront:/usr/app
+    command: ["npm", "run", "start"]
+
+  node-back:
+    build:
+      context: ./node_rest_api
+      dockerfile: dev.dockerfile
+    env_file:
+      - .env
+    volumes:
+      - /usr/app/node_modules
+      - ./node_rest_api:/usr/app
+    command: ["npm", "run", "dev"]
+
+  golang-back:
+    build:
+      context: ./go_rest_api
+      dockerfile: dev.dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./golang:/root
+    depends_on:
+      - postgres
+    command: ["go", "run", "main.go"]
+
+  postgres:
+    build:
+      context: ./PostgresDb
+      dockerfile: dev.dockerfile
+    ports:
+      - "15432:5432"
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./PostgresDb/dev/data:/var/lib/postgresql/data
