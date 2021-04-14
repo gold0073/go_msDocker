@@ -52,7 +52,7 @@ class BoardDetail extends React.Component {
 
   updateBoard(id) {
     //golang API 호출
-    const url = "/api/golang/ms-updateContent";
+    const url = "/api/golang/ms-updateContent/" + id;
 
     //node API 호출
     //const url = "/api/node/ms-updateContent";

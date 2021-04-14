@@ -32,11 +32,11 @@ class BoardDelete extends React.Component {
 
   deleteBoard(id) {
     //golang API 호출
-    const url = "/api/golang/ms-deleteContent";
+    const url = "/api/golang/ms-deleteContent/" + id;
 
     //node API 호출
     //const url = "/api/node/ms-deleteContent";
-    
+
     const qstring = qs.stringify({
       content_id: id,
       act_type: "content_delete",

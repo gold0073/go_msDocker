@@ -152,11 +152,18 @@ class App extends Component {
   }
 
   render() {
-    const filteredComponents = (data) => {
-      data = data.filter((c) => {
+    const filteredComponents = (resp) => {
+      //Node Js 
+      //resp = resp.filter((c) => {
+      //  return c.title.indexOf(this.state.searchKeyword) > -1;
+      //});
+
+      //goLang
+      resp = resp.data.filter((c) => {
         return c.title.indexOf(this.state.searchKeyword) > -1;
       });
-      return data.map((c) => {
+
+      return resp.map((c) => {
         return (
           <Board
             stateRefresh={this.stateRefresh}
