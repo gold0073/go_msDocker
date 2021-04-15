@@ -52,10 +52,10 @@ class BoardAdd extends React.Component {
 
   addBoardWrite() {
     //golang API 호출
-    const url = "/api/golang/ms-addContent";
+    //const url = "/api/golang/ms-addContent";
 
     //node API 호출
-    //const url = "/api/node/ms-addContent";
+    const url = "/api/node/ms-addContent";
 
     const qstring = qs.stringify({
       user_id: "1",
