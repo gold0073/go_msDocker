@@ -50,7 +50,7 @@ services:
       context: ./PostgresDb
       dockerfile: dev.dockerfile
     ports:
-      - "5432:5432"
+      - "15432:5432"
     restart: always
     env_file:
       - .env
