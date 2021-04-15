@@ -40,8 +40,15 @@ function contentlist(req,res,next){
 
     pool.query(sendquery);
     
-    var rows = []; 
-    sendquery.on("row",row=>{ rows.push(row); });
+    var rows = {
+        sucess: false,
+        data: [],
+    }; 
+
+    sendquery.on("row",row=>{ 
+        rows.sucess = true;
+        rows.data.push(row); 
+    });
     
     sendquery.on('end', () => { 
         console.log(rows); 
@@ -69,8 +76,15 @@ function contentlist_detail(req,res,next){
 
     const sendquery = new Query(pg_query,[param_contentid]);
     pool.query(sendquery);
-    var rows = []; 
-    sendquery.on("row",row=>{ rows.push(row); });
+    var rows = {
+        sucess: false,
+        data: [],
+    }; 
+
+    sendquery.on("row",row=>{ 
+        rows.sucess = true;
+        rows.data.push(row); 
+    });
 }
 
 function contentlist_id(req,res,next){ 
@@ -83,10 +97,15 @@ function contentlist_id(req,res,next){
         WHERE CT.content_id = $1`;
 
     var sendquery = client.query(pg_query,[param_contentid]); 
-    var rows = []; 
-    sendquery.on('row', function(row){ 
-        rows.push(row); 
-    }); 
+    var rows = {
+        sucess: false,
+        data: [],
+    }; 
+
+    sendquery.on("row",row=>{ 
+        rows.sucess = true;
+        rows.data.push(row); 
+    });
     
     sendquery.on('end', function(row,err){ 
         res.render('index', { 
@@ -113,10 +132,14 @@ function addContent(req, res , next ){
 
     const sendquery = new Query(pg_query,[param_userid,param_title,param_context]);
     pool.query(sendquery);
-    var rows = []; 
+    var rows = {
+        sucess: false,
+        data: [],
+    }; 
 
     sendquery.on("row",row=>{ 
-        rows.push(row); 
+        rows.sucess = true;
+        rows.data.push(row); 
     });
     
     sendquery.on('end', () => { 
@@ -145,10 +168,14 @@ function updateContent(req, res , next ){
 
     const sendquery = new Query(pg_query,[param_title,param_context,param_contentid]);
     pool.query(sendquery);
-    var rows = []; 
+    var rows = {
+        sucess: false,
+        data: [],
+    }; 
 
     sendquery.on("row",row=>{ 
-        rows.push(row); 
+        rows.sucess = true;
+        rows.data.push(row); 
     });
     
     sendquery.on('end', () => { 
@@ -171,10 +198,14 @@ function deleteContent(req , res , next){
     console.log("param_contentid ==>",param_contentid);
     const sendquery = new Query(pg_query,[param_contentid]);
     pool.query(sendquery);
-    var rows = []; 
+    var rows = {
+        sucess: false,
+        data: [],
+    }; 
 
     sendquery.on("row",row=>{ 
-        rows.push(row); 
+        rows.sucess = true;
+        rows.data.push(row); 
     });
     
     sendquery.on('end', () => { 

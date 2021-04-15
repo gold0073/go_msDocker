@@ -131,10 +131,10 @@ class App extends Component {
 
   callApi = async () => {
     //golang Api 호출
-    const response = await fetch("/api/golang/ms-contentlist");
+    //const response = await fetch("/api/golang/ms-contentlist");
 
     //Node Api 호출
-    //const response = await fetch("/api/node/ms-contentlist");
+    const response = await fetch("/api/node/ms-contentlist");
 
     const body = await response.json();
     return body;
@@ -153,12 +153,6 @@ class App extends Component {
 
   render() {
     const filteredComponents = (resp) => {
-      //Node Js 
-      //resp = resp.filter((c) => {
-      //  return c.title.indexOf(this.state.searchKeyword) > -1;
-      //});
-
-      //goLang
       resp = resp.data.filter((c) => {
         return c.title.indexOf(this.state.searchKeyword) > -1;
       });
