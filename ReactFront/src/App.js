@@ -190,7 +190,7 @@ class App extends Component {
               color="inherit"
               noWrap
             >
-              마이크로서비스 React Board(NodeJs 백엔드)
+              마이크로서비스 React Board(<font color="pink">NodeJs</font> 백엔드)
             </Typography>
             <div className={classes.grow} />
             <div className={classes.search}>
