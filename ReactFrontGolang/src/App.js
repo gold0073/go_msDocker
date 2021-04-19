@@ -131,10 +131,10 @@ class App extends Component {
 
   callApi = async () => {
     //golang Api 호출
-    //const response = await fetch("/api/golang/ms-contentlist");
+    const response = await fetch("/api/golang/ms-contentlist");
 
     //Node Api 호출
-    const response = await fetch("/api/node/ms-contentlist");
+    //const response = await fetch("/api/node/ms-contentlist");
 
     const body = await response.json();
     return body;
@@ -190,7 +190,7 @@ class App extends Component {
               color="inherit"
               noWrap
             >
-              마이크로서비스 React Board(NodeJs 백엔드)
+              마이크로서비스 React Board(Golang 백엔드)
             </Typography>
             <div className={classes.grow} />
             <div className={classes.search}>

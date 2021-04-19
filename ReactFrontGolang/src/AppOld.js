@@ -9,19 +9,19 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
-import BoardAdd from "./components/BoardAdd";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import InputBase from "@material-ui/core/InputBase";
+import { fade } from "@material-ui/core/styles/colorManipulator";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
 
 const styles = (theme) => ({
   root: {
     width: "100%",
+    minWidth: 1080,
   },
   menu: {
     marginTop: 15,
@@ -43,8 +43,8 @@ const styles = (theme) => ({
     fontSize: "1.0rem",
   },
   menuButton: {
-    marginLeft: 0,
-    marginRight: 0,
+    marginLeft: -12,
+    marginRight: 20,
   },
   title: {
     display: "none",
@@ -99,43 +99,34 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      borders: "",
+      boards: "",
       completed: 0,
       searchKeyword: "",
     };
-    this.stateRefresh = this.stateRefresh.bind(this);
-    this.handleValueChange = this.handleValueChange.bind(this);
   }
 
-  stateRefresh() {
+  stateRefresh = () => {
     this.setState({
-      borders: "",
+      boards: "",
       completed: 0,
       searchKeyword: "",
     });
     this.callApi()
-      .then((res) => this.setState({ borders: res }))
+      .then((res) => this.setState({ boards: res }))
       .catch((err) => console.log(err));
-  }
+  };
 
   componentDidMount() {
     this.timer = setInterval(this.progress, 20);
     this.callApi()
-      .then((res) => this.setState({ borders: res }))
+      .then((res) => this.setState({ boards: res }))
       .catch((err) => console.log(err));
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
   callApi = async () => {
-    //golang Api 호출
-    //const response = await fetch("/api/golang/ms-contentlist");
-
-    //Node Api 호출
-    const response = await fetch("/api/node/ms-contentlist");
-
+    const response = await fetch(
+      "http://127.0.0.1:8800/mdb_boards?act_type=content_inquery"
+    );
     const body = await response.json();
     return body;
   };
@@ -145,26 +136,25 @@ class App extends Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
 
-  handleValueChange(e) {
+  handleValueChange = (e) => {
     let nextState = {};
-    nextState[e.target.name] = e.target.value;
+    nextState[e.target.title] = e.target.value;
     this.setState(nextState);
-  }
+  };
 
   render() {
-    const filteredComponents = (resp) => {
-      resp = resp.data.filter((c) => {
+    const filteredComponents = (data) => {
+      data = data.filter((c) => {
         return c.title.indexOf(this.state.searchKeyword) > -1;
       });
 
-      return resp.map((c) => {
+      return data.map((c) => {
         return (
           <Board
             stateRefresh={this.stateRefresh}
             key={c.content_id}
             id={c.content_id}
             title={c.title}
-            context={c.context}
             created_at={c.created_at}
             user_name={c.user_name}
           />
@@ -172,7 +162,7 @@ class App extends Component {
       });
     };
     const { classes } = this.props;
-    const cellList = ["번호", "제목", "작성일", "작성자", ""];
+    const cellList = ["글번호", "제목", "등록일", "글쓴이"];
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -190,7 +180,7 @@ class App extends Component {
               color="inherit"
               noWrap
             >
-              마이크로서비스 React Board(NodeJs 백엔드)
+              React Maria Board
             </Typography>
             <div className={classes.grow} />
             <div className={classes.search}>
@@ -210,11 +200,8 @@ class App extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <div className={classes.menu}>
-          <BoardAdd stateRefresh={this.stateRefresh} />
-        </div>
         <Paper className={classes.paper}>
-          <Table>
+          <Table className={classes.table}>
             <TableHead>
               <TableRow>
                 {cellList.map((c) => {
@@ -225,8 +212,8 @@ class App extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.borders ? (
-                filteredComponents(this.state.borders)
+              {this.state.boards ? (
+                filteredComponents(this.state.boards)
               ) : (
                 <TableRow>
                   <TableCell colSpan="6" align="center">
