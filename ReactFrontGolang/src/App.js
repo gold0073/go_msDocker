@@ -131,7 +131,7 @@ class App extends Component {
 
   callApi = async () => {
     //golang Api 호출
-    const response = await fetch("/api/golang/ms-contentlist");
+    const response = await fetch("http://localhost/api/golang/ms-contentlist");
 
     //Node Api 호출
     //const response = await fetch("/api/node/ms-contentlist");

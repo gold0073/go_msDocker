@@ -10,7 +10,8 @@ services:
       - ./Nginx/logs:/var/log/nginx
     ports:
       - "80:80"
-
+      - "443:443"
+  ################# React Front - Node Backend########################
   react-front:
     build:
       dockerfile: dev.dockerfile
@@ -22,6 +23,7 @@ services:
       - ./ReactFront:/usr/app
     command: ["npm", "run", "start"]
 
+  ################# Node BackEnd########################  
   node-back:
     build:
       context: ./node_rest_api
@@ -33,6 +35,21 @@ services:
       - ./node_rest_api:/usr/app
     command: ["npm", "run", "dev"]
 
+  ################# React Front - Golang Backend########################  
+  react-front-golang:
+    build:
+      dockerfile: dev.dockerfile
+      context: ReactFrontGolang
+    env_file:
+      - .env
+    volumes:
+      - /usr/app/node_modules
+      - ./ReactFrontGolang:/usr/app
+    #ports:
+    #  - "3002"  
+    command: ["npm", "run", "start"]  
+
+  ################# Golang Backend########################    
   golang-back:
     build:
       context: ./go_rest_api
@@ -45,6 +62,7 @@ services:
       - postgres
     command: ["go", "run", "main.go"]
 
+  ################# Postgre ########################      
   postgres:
     build:
       context: ./PostgresDb
